@@ -8,9 +8,11 @@
    :headers {"Content-type" "text/html"}
    :body "<h1>hello, world!!aa</h1>"})
 
-(defn start-server []
-  (when-not @server
-    (reset! server (server/run-jetty #'handler {:port 3000 :join? false}))))
+(defn start-server [& {:keys [host port join?]
+                       :or {host "localhost" port 3000 join? false}}]
+  (let [port (if (string? port) (Integer/parseInt port) port)]
+    (when-not @server
+      (reset! server (server/run-jetty #'handler {:host :port port :join? join?})))))
 
 (defn stop-server []
   (when @server
@@ -22,4 +24,8 @@
     (stop-server)
     (start-server)))
 
+
+;(def routes
+;  {"/" home
+;   "/todo" todo-index})
 
