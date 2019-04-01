@@ -8,6 +8,7 @@
    <a href=\"/todo\">TODO 一覧</a>")
 
 (defn home [req]
+  #_(throw (Exception. "test Ecsep!!!")) ;; prone sample
   (-> (home-view req)
       res/response
       res/html))
