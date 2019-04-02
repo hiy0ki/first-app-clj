@@ -1,15 +1,12 @@
 (ns first-web-app.handler.main
   (:require [compojure.core :refer [defroutes GET]]
             [compojure.route :as route]
-            [first-web-app.util.response :as res]))
-
-(defn home-view [req]
-  "<h1>ホーム画面</h1>
-   <a href=\"/todo\">TODO 一覧</a>")
+            [first-web-app.util.response :as res]
+            [first-web-app.view.main :as view]))
 
 (defn home [req]
   #_(throw (Exception. "test Ecsep!!!")) ;; prone sample
-  (-> (home-view req)
+  (-> (view/home-view req)
       res/response
       res/html))
 

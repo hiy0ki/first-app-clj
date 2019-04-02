@@ -1,6 +1,7 @@
 (ns first-web-app.handler.todo
   (:require [compojure.core :refer [defroutes context GET POST]]
-            [first-web-app.util.response :as res]))
+            [first-web-app.util.response :as res]
+            [first-web-app.view.todo :as view))
 
 (def todo-list
   [{:title "朝ゴハンを作る"}
@@ -8,15 +9,9 @@
    {:title "朝ゴハンを燃やす"}
    {:title "朝ゴハンを片付ける"}])
 
-(defn todo-index-view [req]
-  `("<h1>TODO 一覧</h1>"
-    "<ul>"
-    ~@(for [{:keys [title]} todo-list]
-        (str "<li>" title "</li>"))
-    "</ul>"))
 
 (defn todo-index [req]
-  (-> (todo-index-view req)
+  (-> (view/todo-index-view req todo-list)
       res/response
       res/html))
 
