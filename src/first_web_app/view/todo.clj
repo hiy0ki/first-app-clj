@@ -1,12 +1,11 @@
 (ns first-web-app.view.todo
-  (:require [hiccup.core :as hc]))
+  (:require [first-web-app.view.layout :as layout]))
 
 (defn todo-index-view [req todo-list]
-  (-> `([:h1 "todo 一覧"]
-        [:ul
-         ~@(for [{:keys [title]} todo-list]
-                 [:li title])])
-      hc/html))
-
+  (->> `([:h2 "todo 一覧"]
+         [:ul
+          ~@(for [{:keys [title]} todo-list]
+              [:li title])])
+       (layout/common req)))
 
 

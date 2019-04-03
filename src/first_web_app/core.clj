@@ -1,6 +1,7 @@
 (ns first-web-app.core
   (:require [compojure.core :refer [routes]]
             [ring.adapter.jetty :as server]
+            [ring.middleware.resource :as resource]
             [first-web-app.handler.main :refer [main-routes]]
             [first-web-app.handler.todo :refer [todo-routes]]
             [first-web-app.middleware :refer [wrap-dev]]
@@ -17,7 +18,8 @@
   (-> (routes
        todo-routes
        main-routes)
-      (wrap wrap-dev (:dev env))))
+      (wrap wrap-dev (:dev env))
+      (wrap resource/wrap-resource "public")))
 
 (defonce server (atom nil))
 
