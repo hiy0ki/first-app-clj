@@ -1,19 +1,14 @@
 (ns first-web-app.handler.todo
   (:require [compojure.core :refer [defroutes context GET POST]]
+            [first-web-app.db.todo :as todo]
             [first-web-app.util.response :as res]
             [first-web-app.view.todo :as view]))
 
-(def todo-list
-  [{:title "朝ゴハンを作る"}
-   {:title "朝ゴハンを食べる"}
-   {:title "朝ゴハンを燃やす"}
-   {:title "朝ゴハンをs片付ける"}])
-
-
 (defn todo-index [req]
-  (-> (view/todo-index-view req todo-list)
-      res/response
-      res/html))
+  (let [todo-list (todo/find-todo-all)]
+    (-> (view/todo-index-view req todo-list)
+        res/response
+        res/html)))
 
 (defn todo-new [req] "todo new")
 (defn todo-new-post [req] "todo new post")
