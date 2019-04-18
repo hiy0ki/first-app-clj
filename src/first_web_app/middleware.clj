@@ -1,4 +1,13 @@
-(ns first-web-app.middleware)
+(ns first-web-app.middleware
+  (:require [environ.core :refer [env]]
+            [ring.middleware.defaults :as defaults]))
+
+(def ^:private wrap #'defaults/wrap)
+
+(defn middleware-set [handler]
+  (-> handler
+      (wrap wrap-dev (:dev env))
+      (defaults/wrap-defaults defaults/site-defaults)))
 
 (defn- try-resolve [sym]
   (try

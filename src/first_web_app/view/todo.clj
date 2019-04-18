@@ -1,5 +1,6 @@
 (ns first-web-app.view.todo
   (:require [hiccup.form :as hf]
+            [ring.util.anti-forgery :refer [anti-forgery-field]]
             [first-web-app.view.layout :as layout]))
 
 (defn todo-index-view [req todo-list]
@@ -12,11 +13,20 @@
             [:li [:a {:href (str "/todo/" id)} title]])]]
         (layout/common req)))
 
+(defn error-messages [req]
+  (when-let [errors (:errors req)]
+    [:ul
+     (for [[k v] errors
+           msg v]
+       [:li.error-message msg])]))
+
 (defn todo-new-view [req]
   (->> [:section.card
         [:h2 "todo 追加"]
         (hf/form-to
          [:post "/todo/new"]
+         (anti-forgery-field)
+         (error-messages req)
          [:input {:name :title :placeholder "todoを入力してください"}]
          [:button.bg-blue "追加する"])]
        (layout/common req)))
@@ -37,6 +47,7 @@
           [:h2 "todo 編集"]
           (hf/form-to
            [:post (str "/todo/" todo-id "/edit")]
+           (error-messages req)
            [:input {:name :title :value (:title todo)
                     :placeholder "todoを入力してください"}]
            [:button.bg-blue "更新する"])]

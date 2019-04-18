@@ -1,33 +1,15 @@
 (ns first-web-app.core
   (:require [compojure.core :refer [routes]]
             [ring.adapter.jetty :as server]
-            [ring.middleware.flash :as flash]
-            [ring.middleware.keyword-params :as keyword-params]
-            [ring.middleware.params :as params]
-            [ring.middleware.resource :as resource]
-            [ring.middleware.session :as session]
             [first-web-app.handler.main :refer [main-routes]]
             [first-web-app.handler.todo :refer [todo-routes]]
-            [first-web-app.middleware :refer [wrap-dev]]
-            [environ.core :refer [env]]))
-   
-(defn- wrap [handler middleware opt]
-  (if (true? opt)
-    (middleware handler)
-    (if opt
-      (middleware handler opt)
-      handler)))
+            [first-web-app.middleware :refer [middleware-set]]))
 
 (def app
-  (-> (routes
-       todo-routes
-       main-routes)
-      (wrap wrap-dev (:dev env))
-      (wrap resource/wrap-resource "public")
-      (wrap keyword-params/wrap-keyword-params true)
-      (wrap params/wrap-params true)
-      (wrap flash/wrap-flash true)
-      (wrap session/wrap-session true)))
+  (middleware-set
+   (routes
+    todo-routes
+    main-routes)))
 
 (defonce server (atom nil))
 

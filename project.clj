@@ -10,7 +10,9 @@
                  [hiccup "1.0.5"]
                  [environ "1.0.1"]
                  [org.clojure/java.jdbc "0.7.9"]
-                 [org.postgresql/postgresql "42.2.5"]]
+                 [org.postgresql/postgresql "42.2.5"]
+                 [bouncer "0.3.3"]
+                 [ring/ring-defaults "0.3.2"]]
   :repl-options {:init-ns first-web-app.core}
   :uberjar-name "first-web-app.jar"
   :plugins [[lein-environ "1.0.1"]]
